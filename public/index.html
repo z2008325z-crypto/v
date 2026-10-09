@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nexus XO</title>
+<style>
+  :root { --primary:#4f46e5; --bg:#0f172a; --text:#fff; --card:rgba(0,0,0,.55); }
+  body { margin:0; min-height:100vh; display:flex; justify-content:center; align-items:center;
+         background:var(--bg) center/cover fixed; color:var(--text); font-family:sans-serif; }
+  .card { background:var(--card); padding:24px; border-radius:16px; width:min(90vw,360px); }
+  input,button { width:100%; padding:12px; margin:6px 0; border-radius:8px; border:none; box-sizing:border-box; }
+  button { background:var(--primary); color:#fff; cursor:pointer; }
+  .link { background:none; color:#a5b4fc; text-decoration:underline; }
+  #msg { min-height:20px; font-size:14px; }
+  .hidden { display:none; }
+</style>
+</head>
+<body>
+<div class="card">
+  <h2>Nexus XO</h2>
+  <div id="authView">
+    <input id="email" type="email" placeholder="البريد الإلكتروني">
+    <input id="password" type="password" placeholder="كلمة السر">
+    <button id="loginBtn">تسجيل دخول</button>
+    <button id="registerBtn">إنشاء حساب</button>
+    <button class="link" id="forgotBtn">نسيت كلمة السر؟</button>
+  </div>
+
+  <div id="codeView" class="hidden">
+    <input id="code" placeholder="الكود (6 أرقام)" maxlength="6">
+    <input id="newPassword" type="password" placeholder="كلمة السر الجديدة" class="hidden">
+    <button id="confirmBtn">تأكيد</button>
+    <button class="link" id="backBtn">رجوع</button>
+  </div>
+
+  <div id="msg"></div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-functions-compat.js"></script>
+<script>
+  // ⚠️ ضع إعدادات Web App هنا (مش إعدادات Android)
+  firebase.initializeApp({
+    apiKey: "PUT_WEB_API_KEY",
+    authDomain: "nexus-39896.firebaseapp.com",
+    projectId: "nexus-39896",
+    appId: "PUT_WEB_APP_ID"
+  });
+  const auth = firebase.auth();
+  const fns = firebase.app().functions("us-central1");
+  const $ = (id) => document.getElementById(id);
+  const msg = (t) => $("msg").textContent = t;
+
+  let mode = null; // "verify" | "reset"
+
+  $("registerBtn").onclick = async () => {
+    try {
+      const email = $("email").value.trim();
+      const cred = await auth.createUserWithEmailAndPassword(email, $("password").value);
+      await cred.user.sendEmailVerification().catch(() => {});
+      await fns.httpsCallable("sendCode")({ email, purpose: "verify" });
+      mode = "verify";
+      showCode(false);
+      msg("تم إنشاء الحساب، دخل الكود اللي وصلك على الإيميل");
+    } catch (e) { msg(e.message); }
+  };
+
+  $("loginBtn").onclick = async () => {
+    try {
+      const cred = await auth.signInWithEmailAndPassword($("email").value.trim(), $("password").value);
+      if (!cred.user.emailVerified) {
+        await auth.signOut();
+        msg("الإيميل لسه مش متفعل، هنبعتلك كود جديد");
+        await fns.httpsCallable("sendCode")({ email: $("email").value.trim(), purpose: "verify" });
+        mode = "verify";
+        showCode(false);
+        return;
+      }
+      msg("تم تسجيل الدخول ✅");
+    } catch (e) { msg("بيانات الدخول غلط"); }
+  };
+
+  $("forgotBtn").onclick = async () => {
+    try {
+      await fns.httpsCallable("sendCode")({ email: $("email").value.trim(), purpose: "reset" });
+      mode = "reset";
+      showCode(true);
+      msg("لو الإيميل مسجل هيوصلك كود");
+    } catch (e) { msg(e.message); }
+  };
+
+  $("confirmBtn").onclick = async () => {
+    try {
+      const email = $("email").value.trim();
+      const code = $("code").value.trim();
+      if (mode === "verify") {
+        await fns.httpsCallable("verifyEmail")({ email, code });
+        msg("تم تفعيل الحساب، سجل دخول");
+        showAuth();
+      } else {
+        await fns.httpsCallable("resetPassword")({ email, code, newPassword: $("newPassword").value });
+        msg("تم تغيير كلمة السر، سجل دخول");
+        showAuth();
+      }
+    } catch (e) { msg(e.message); }
+  };
+
+  $("backBtn").onclick = showAuth;
+
+  function showCode(withNewPass) {
+    $("authView").classList.add("hidden");
+    $("codeView").classList.remove("hidden");
+    $("newPassword").classList.toggle("hidden", !withNewPass);
+  }
+  function showAuth() {
+    $("codeView").classList.add("hidden");
+    $("authView").classList.remove("hidden");
+  }
+</script>
+</body>
+</html>
