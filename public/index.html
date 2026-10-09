@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nexus - لعبة الذاكرة</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="wrap">
+  <header class="topbar hidden" id="topbar">
+    <span id="welcome"></span>
+    <div class="top-actions">
+      <button class="ghost hidden" id="adminBtn">لوحة الأدمن</button>
+      <button class="ghost" id="logoutBtn">خروج</button>
+    </div>
+  </header>
+
+  <section class="panel" id="authScreen">
+    <h1>Nexus</h1>
+    <form id="loginForm" class="form">
+      <input id="loginEmail" type="email" placeholder="البريد الإلكتروني" required>
+      <input id="loginPassword" type="password" placeholder="كلمة السر" required>
+      <button type="submit">تسجيل دخول</button>
+      <button type="button" class="link" data-go="register">إنشاء حساب</button>
+      <button type="button" class="link" data-go="forgot">نسيت كلمة السر؟</button>
+    </form>
+
+    <form id="registerForm" class="form hidden">
+      <input id="regName" placeholder="الاسم (اختياري)">
+      <input id="regEmail" type="email" placeholder="البريد الإلكتروني" required>
+      <input id="regPassword" type="password" placeholder="كلمة السر (6 حروف على الأقل)" required>
+      <button type="submit">إنشاء حساب</button>
+      <button type="button" class="link" data-go="login">عندي حساب</button>
+    </form>
+
+    <form id="forgotForm" class="form hidden">
+      <input id="forgotEmail" type="email" placeholder="البريد الإلكتروني" required>
+      <button type="submit">إرسال كود</button>
+      <button type="button" class="link" data-go="login">رجوع</button>
+    </form>
+  </section>
+
+  <section class="panel hidden" id="codeScreen">
+    <h2 id="codeTitle">أدخل الكود</h2>
+    <form id="codeForm" class="form">
+      <input id="codeInput" inputmode="numeric" maxlength="6" placeholder="الكود (6 أرقام)" required>
+      <input id="newPasswordInput" type="password" placeholder="كلمة السر الجديدة" class="hidden">
+      <button type="submit">تأكيد</button>
+      <button type="button" class="link" id="resendBtn">إعادة إرسال الكود</button>
+      <button type="button" class="link" data-go="login">رجوع</button>
+    </form>
+  </section>
+
+  <section class="panel hidden" id="gameScreen">
+    <div class="stats">
+      <span>الحركات: <b id="moves">0</b></span>
+      <span>الوقت: <b id="time">0</b> ث</span>
+    </div>
+    <div id="board" class="board"></div>
+    <p id="status" class="status"></p>
+    <button id="restartBtn">لعبة جديدة</button>
+  </section>
+
+  <section class="panel hidden" id="adminScreen">
+    <h2>لوحة الأدمن</h2>
+    <label>اللون الأساسي <input type="color" id="primaryColor"></label>
+    <label>لون الخلفية <input type="color" id="backgroundColor"></label>
+    <input id="backgroundImage" placeholder="رابط صورة الخلفية (https://...)">
+    <button id="saveSettingsBtn">حفظ الشكل</button>
+    <hr>
+    <input id="promoteEmail" type="email" placeholder="إيميل المستخدم لترقيته لأدمن">
+    <button id="promoteBtn">ترقية لأدمن</button>
+    <button type="button" class="link" id="backToGame">رجوع للعبة</button>
+  </section>
+
+  <p id="msg" class="msg"></p>
+</main>
+<script src="script.js"></script>
+</body>
+</html>
