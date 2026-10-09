@@ -51,3 +51,7 @@ curl -X PUT localhost:3000/api/admin/settings -H "Content-Type: application/json
 ## ملاحظات
 - التخزين في `data/db.json` للتجربة. للإنتاج استخدم قاعدة بيانات.
 - `.env` و`data/` مش هيتعملهم push على GitHub (موجودين في .gitignore).
+
+## الموقع
+الواجهة موجودة في مجلد `public/` وبتتقدم من نفس السيرفر.
+افتح `http://localhost:3000` بعد `npm start`.

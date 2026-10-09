@@ -303,6 +303,8 @@ app.post("/api/admin/promote", auth, adminOnly, wrap(async (req, res) => {
   res.json({ ok: true });
 }));
 
+app.use(express.static(path.join(__dirname, "public")));
+
 app.use((req, res) => res.status(404).json({ error: "مش موجود" }));
 
 app.listen(PORT, () => console.log(`Nexus backend on http://localhost:${PORT}`));
