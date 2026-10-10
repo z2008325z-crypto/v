@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تسجيل الدخول</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main class="card">
+
+    <!-- ===== تسجيل الدخول ===== -->
+    <section id="view-login">
+      <h1>تسجيل الدخول</h1>
+
+      <div class="tabs">
+        <button id="tab-code" class="tab active" type="button">بكود الإيميل</button>
+        <button id="tab-password" class="tab" type="button">بكلمة السر</button>
+      </div>
+
+      <div id="code-login">
+        <form id="email-form">
+          <label for="email-input">الإيميل</label>
+          <input id="email-input" type="email" autocomplete="email" required placeholder="you@example.com">
+          <button id="send-code-btn" type="submit">ابعت الكود</button>
+        </form>
+
+        <form id="code-form" hidden>
+          <label for="code-input">اكتب الكود اللي وصلك (6 أرقام)</label>
+          <input id="code-input" inputmode="numeric" autocomplete="one-time-code" maxlength="6" required placeholder="123456">
+          <button id="verify-btn" type="submit">دخول</button>
+          <button id="resend-btn" type="button" class="secondary">ابعت كود تاني</button>
+          <button id="back-btn" type="button" class="link">غيّر الإيميل</button>
+        </form>
+      </div>
+
+      <form id="password-form" hidden>
+        <label for="pw-email">الإيميل</label>
+        <input id="pw-email" type="email" autocomplete="email" required>
+        <label for="pw-input">كلمة السر</label>
+        <input id="pw-input" type="password" autocomplete="current-password" required>
+        <button id="pw-btn" type="submit">دخول</button>
+      </form>
+
+      <p class="footer-links">
+        <button id="go-recover" type="button" class="link">نسيت كلمة السر؟ استرجع حسابك</button>
+      </p>
+    </section>
+
+    <!-- ===== استرجاع الحساب ===== -->
+    <section id="view-recover" hidden>
+      <h1>استرجاع الحساب</h1>
+
+      <form id="recover-email-form">
+        <label for="recover-email">الإيميل المسجل</label>
+        <input id="recover-email" type="email" autocomplete="email" required placeholder="you@example.com">
+        <button id="recover-send-btn" type="submit">ابعت كود الاسترجاع</button>
+      </form>
+
+      <form id="recover-reset-form" hidden>
+        <label for="recover-code">كود الاسترجاع (6 أرقام)</label>
+        <input id="recover-code" inputmode="numeric" autocomplete="one-time-code" maxlength="6" required placeholder="123456">
+
+        <label for="new-password">كلمة السر الجديدة</label>
+        <input id="new-password" type="password" autocomplete="new-password" minlength="6" required>
+
+        <label for="confirm-password">أكّد كلمة السر</label>
+        <input id="confirm-password" type="password" autocomplete="new-password" minlength="6" required>
+
+        <button id="recover-reset-btn" type="submit">غيّر كلمة السر</button>
+        <button id="recover-resend-btn" type="button" class="secondary">ابعت كود تاني</button>
+      </form>
+
+      <p class="footer-links">
+        <button id="back-login" type="button" class="link">رجوع لتسجيل الدخول</button>
+      </p>
+    </section>
+
+    <!-- ===== الصفحة الرئيسية ===== -->
+    <section id="view-home" hidden>
+      <h1>أهلاً 👋</h1>
+      <p>مسجل دخول بالإيميل: <strong id="user-email"></strong></p>
+
+      <h2>كلمة السر</h2>
+      <p class="hint">لو دخلت بالكود، تقدر تحط كلمة سر عشان تدخل بيها بعد كده.</p>
+      <form id="set-password-form">
+        <label for="set-password">كلمة سر جديدة</label>
+        <input id="set-password" type="password" autocomplete="new-password" minlength="6" required>
+        <button id="set-password-btn" type="submit">احفظ كلمة السر</button>
+      </form>
+
+      <button id="logout-btn" type="button" class="secondary">تسجيل خروج</button>
+    </section>
+
+    <p id="message" class="message" hidden></p>
+  </main>
+
+  <script type="module" src="script.js"></script>
+</body>
+</html>
