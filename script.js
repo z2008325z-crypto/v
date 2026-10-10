@@ -4,7 +4,7 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 // Project Settings > API
 // المفتاح ده (anon / publishable) آمن يبقى ظاهر. ماتحطش أبداً service_role.
 const SUPABASE_URL = 'https://YOUR-PROJECT-ID.supabase.co';
-const SUPABASE_ANON_KEY = 'YOUR-ANON-OR-PUBLISHABLE-KEY';
+const SUPABASE_ANON_KEY = 'sb_publishable_IA5lPb2hBGQTtzWs95KFvg_EvtxIrvz';
 
 const CONFIG_OK = !SUPABASE_URL.includes('YOUR-') && !SUPABASE_ANON_KEY.includes('YOUR-');
 

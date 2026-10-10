@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://imglink.cc/cdn/x2SXw5g5ph.png" alt="صورة المشروع" width="220">
+</p>
+
 # موقع تسجيل الدخول بكود الإيميل
 
 موقع static بيشتغل على GitHub Pages، والـ backend فيه Supabase.
