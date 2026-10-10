@@ -6,6 +6,8 @@ import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
 const SUPABASE_URL = 'https://YOUR-PROJECT-ID.supabase.co';
 const SUPABASE_ANON_KEY = 'YOUR-ANON-OR-PUBLISHABLE-KEY';
 
+const CONFIG_OK = !SUPABASE_URL.includes('YOUR-') && !SUPABASE_ANON_KEY.includes('YOUR-');
+
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ===== أدوات مساعدة =====
@@ -30,7 +32,12 @@ function showMessage(text, type = 'error') {
 }
 
 function friendlyError(err) {
-  const text = (err?.message || '').toLowerCase();
+  const raw = err?.message || '';
+  const text = raw.toLowerCase();
+  if (!CONFIG_OK) return 'لازم تحط SUPABASE_URL و SUPABASE_ANON_KEY في script.js الأول.';
+  if (text.includes('failed to fetch') || text.includes('networkerror') || text.includes('load failed')) {
+    return 'ما قدرتش أوصل لسيرفر Supabase. اتأكد من الرابط والمفتاح في script.js، والإنترنت شغال.';
+  }
   if (text.includes('invalid login credentials')) return 'الإيميل أو كلمة السر غلط.';
   if (text.includes('expired') || text.includes('invalid')) return 'الكود غلط أو انتهت صلاحيته، اطلب كود جديد.';
   if (text.includes('seconds') || text.includes('rate limit') || text.includes('security purposes')) {
@@ -38,7 +45,7 @@ function friendlyError(err) {
   }
   if (text.includes('password should be')) return 'كلمة السر لازم تكون 6 حروف على الأقل.';
   if (text.includes('email')) return 'تأكد من الإيميل وجرب تاني.';
-  return 'حصلت مشكلة، حاول تاني.';
+  return `حصلت مشكلة: ${raw || 'غير معروف'}`;
 }
 
 function isValidEmail(email) {
@@ -314,8 +321,18 @@ function renderSession(session) {
   }
 }
 
-const { data: initial } = await supabase.auth.getSession();
-renderSession(initial.session);
+if (!CONFIG_OK) {
+  showView('login');
+  showMessage('لازم تحط SUPABASE_URL و SUPABASE_ANON_KEY في script.js الأول.');
+} else {
+  try {
+    const { data: initial } = await supabase.auth.getSession();
+    renderSession(initial.session);
+  } catch (err) {
+    showView('login');
+    showMessage(friendlyError(err));
+  }
+}
 
 supabase.auth.onAuthStateChange((event, session) => {
   if (event === 'SIGNED_OUT') return showView('login');
