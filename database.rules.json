@@ -1,0 +1,112 @@
+{
+  "rules": {
+    "settings": {
+      ".read": true,
+      ".write": "auth != null && (root.child('admins/' + auth.uid).val() === true || auth.token.email === 'abmen@gmail.com')"
+    },
+    "admins": {
+      ".read": true,
+      "$uid": {
+        ".write": "auth != null && (root.child('admins/' + auth.uid).val() === true || auth.token.email === 'abmen@gmail.com')"
+      }
+    },
+    "verified": {
+      ".read": true,
+      "$uid": {
+        ".write": "auth != null && (root.child('admins/' + auth.uid).val() === true || auth.token.email === 'abmen@gmail.com')"
+      }
+    },
+    "bans": {
+      "$uid": {
+        ".read": "auth != null && (auth.uid === $uid || root.child('admins/' + auth.uid).val() === true)",
+        ".write": "auth != null && (root.child('admins/' + auth.uid).val() === true || auth.token.email === 'abmen@gmail.com')"
+      }
+    },
+    "usernames": {
+      ".read": true,
+      "$username": {
+        ".write": "auth != null && (!data.exists() || data.val() === auth.uid)"
+      }
+    },
+    "users": {
+      ".indexOn": [
+        "email"
+      ],
+      "$uid": {
+        ".read": "auth != null",
+        ".write": "auth != null && auth.uid === $uid"
+      }
+    },
+    "userChats": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        ".write": "auth != null && auth.uid === $uid"
+      }
+    },
+    "userRooms": {
+      "$uid": {
+        ".read": "auth != null && auth.uid === $uid",
+        "$code": {
+          ".write": "auth != null && (auth.uid === $uid || root.child('rooms/' + $code + '/createdBy').val() === auth.uid || root.child('rooms/' + $code + '/mods/' + auth.uid).exists())"
+        }
+      }
+    },
+    "chats": {
+      "$cid": {
+        ".read": "auth != null && $cid.contains(auth.uid)",
+        ".write": "auth != null && $cid.contains(auth.uid) && (!root.child('bans/' + auth.uid).exists() || root.child('bans/' + auth.uid + '/until').val() < now)"
+      }
+    },
+    "messages": {
+      "$cid": {
+        ".read": "auth != null && ((($cid.contains(auth.uid)) && $cid.beginsWith('dm_')) || root.child('rooms/' + $cid + '/members/' + auth.uid).exists())",
+        "$mid": {
+          ".write": "auth != null && ((($cid.contains(auth.uid)) && $cid.beginsWith('dm_')) || root.child('rooms/' + $cid + '/members/' + auth.uid).exists()) && (!root.child('bans/' + auth.uid).exists() || root.child('bans/' + auth.uid + '/until').val() < now) && (!data.exists() || data.child('senderUid').val() === auth.uid || root.child('rooms/' + $cid + '/createdBy').val() === auth.uid || root.child('rooms/' + $cid + '/mods/' + auth.uid).exists())",
+          "reactions": {
+            "$uid": {
+              ".write": "auth != null && auth.uid === $uid && ((($cid.contains(auth.uid)) && $cid.beginsWith('dm_')) || root.child('rooms/' + $cid + '/members/' + auth.uid).exists())"
+            }
+          }
+        }
+      }
+    },
+    "typing": {
+      "$cid": {
+        ".read": "auth != null",
+        "$uid": {
+          ".write": "auth != null && auth.uid === $uid"
+        }
+      }
+    },
+    "rooms": {
+      "$code": {
+        ".read": "auth != null",
+        ".write": "auth != null && (!data.exists() || data.child('createdBy').val() === auth.uid) && (!root.child('bans/' + auth.uid).exists() || root.child('bans/' + auth.uid + '/until').val() < now)",
+        "members": {
+          "$uid": {
+            ".write": "auth != null && (auth.uid === $uid || root.child('rooms/' + $code + '/createdBy').val() === auth.uid || root.child('rooms/' + $code + '/mods/' + auth.uid).exists())"
+          }
+        },
+        "mods": {
+          "$uid": {
+            ".write": "auth != null && root.child('rooms/' + $code + '/createdBy').val() === auth.uid"
+          }
+        }
+      }
+    },
+    "stories": {
+      ".read": "auth != null",
+      "$uid": {
+        "$sid": {
+          ".write": "auth != null && (auth.uid === $uid || root.child('admins/' + auth.uid).val() === true)",
+          "likes": {
+            "$liker": {
+              ".write": "auth != null && auth.uid === $liker",
+              ".validate": "newData.isBoolean() || !newData.exists()"
+            }
+          }
+        }
+      }
+    }
+  }
+}

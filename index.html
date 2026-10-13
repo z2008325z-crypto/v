@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="theme-color" content="#050505">
+<title>Nexus</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="app.css?v=12">
+<link rel="stylesheet" href="features.css?v=13">
+<link rel="stylesheet" href="stories.css?v=1">
+</head>
+<body>
+
+<!-- ===== AUTH ===== -->
+<div id="authScreen" class="screen active">
+  <div class="auth-bg"><div class="glow g1"></div><div class="glow g2"></div></div>
+  <div class="auth-container">
+    <div class="auth-brand">
+      <div class="auth-logo" data-logo="64"></div>
+      <h1 class="auth-title">Nexus</h1>
+      <p class="auth-subtitle">تواصل بحرية. خصوصيتك أولويتنا.</p>
+    </div>
+
+    <div class="seg">
+      <button class="auth-tab active" data-tab="login">دخول</button>
+      <button class="auth-tab" data-tab="register">حساب جديد</button>
+    </div>
+
+    <div id="loginForm" class="auth-form active">
+      <div class="input-group"><label>البريد الإلكتروني</label><input type="email" id="loginEmail" placeholder="example@email.com"></div>
+      <div class="input-group"><label>كلمة المرور</label><input type="password" id="loginPass" placeholder="••••••••"></div>
+      <div id="loginError" class="form-error hidden"></div>
+      <button id="loginBtn" class="btn-primary">دخول</button>
+    </div>
+
+    <div id="registerForm" class="auth-form">
+      <div class="input-group"><label>الاسم الكامل</label><input type="text" id="regName" placeholder="محمد أحمد" maxlength="25"></div>
+      <div class="input-group">
+        <label>اسم المستخدم <small>(إنجليزي، فريد)</small></label>
+        <div class="username-input-wrap"><span class="username-at">@</span><input type="text" id="regUsername" placeholder="mohammed_ahmed" maxlength="20" style="text-align:left;direction:ltr"></div>
+        <small id="usernameStatus" class="input-hint"></small>
+      </div>
+      <div class="input-group"><label>البريد الإلكتروني</label><input type="email" id="regEmail" placeholder="example@email.com"></div>
+      <div class="input-group"><label>كلمة المرور</label><input type="password" id="regPass" placeholder="6 أحرف على الأقل"></div>
+      <div id="regError" class="form-error hidden"></div>
+      <button id="registerBtn" class="btn-primary">إنشاء الحساب</button>
+    </div>
+
+    <div class="auth-footer"><button id="guestBtn" class="btn-text">المتابعة كضيف</button></div>
+  </div>
+</div>
+
+<!-- ===== MAIN ===== -->
+<div id="mainApp" class="screen">
+  <aside class="sidebar" id="sidebar">
+    <header class="sb-header">
+      <button class="icon-btn" id="menuBtn" aria-label="الملف الشخصي"><span data-icon="menu" data-size="20"></span></button>
+      <div class="sb-brand"><span data-logo="28"></span><span class="sb-brand-text">Nexus</span></div>
+      <button class="icon-btn admin-top hidden" id="adminTopBtn" aria-label="لوحة الإدارة"><span data-icon="shield" data-size="19"></span></button>
+    </header>
+
+    <div class="user-card" id="userCard">
+      <div class="user-avatar" id="sidebarAvatar"><img src="" class="hidden" id="sidebarAvatarImg"><span id="sidebarAvatarLetter">ن</span></div>
+      <div class="user-info"><span class="user-name" id="sidebarName">مستخدم</span><span class="user-status" id="sidebarStatus">متصل</span></div>
+    </div>
+
+    <div class="search-box">
+      <span class="search-icon" data-icon="search" data-size="18"></span>
+      <input type="text" id="searchInput" placeholder="ابحث بـ @username" autocomplete="off">
+    </div>
+
+    <div id="searchResults" class="search-results hidden">
+      <div class="results-header">نتائج البحث</div>
+      <div id="searchResultsList"></div>
+    </div>
+
+    <div class="chat-tabs">
+      <button class="chat-tab active" data-tab="chats">المحادثات</button>
+      <button class="chat-tab" data-tab="groups">الغرف</button>
+    </div>
+
+    <div id="chatsList" class="chats-list"></div>
+    <div id="groupsList" class="chats-list hidden"></div>
+
+    <button class="fab-secondary" id="joinGroupFab" aria-label="الانضمام لغرفة"><span data-icon="key" data-size="20"></span></button>
+    <button class="fab" id="createGroupFab" aria-label="إنشاء غرفة"><span data-icon="plus" data-size="24"></span></button>
+  </aside>
+
+  <main class="chat-area">
+    <div id="emptyChat" class="empty-chat">
+      <div class="empty-illustration"><span data-icon="chat" data-size="46"></span></div>
+      <h2>ابدأ محادثة</h2>
+      <p>ابحث عن مستخدم بالـ @username، أو انضم إلى غرفة جماعية بكود.</p>
+    </div>
+
+    <div id="activeChat" class="active-chat hidden">
+      <div class="chat-header">
+        <button class="icon-btn mobile-back" id="mobileBackBtn" aria-label="رجوع"><span data-icon="back" data-size="20"></span></button>
+        <div class="chat-header-avatar" id="chatHeaderAvatar"><img src="" class="hidden"><span>ن</span></div>
+        <div class="chat-header-info">
+          <span class="chat-header-name" id="chatHeaderName">اسم</span>
+          <span class="chat-header-status" id="chatHeaderStatus"></span>
+        </div>
+        <button class="icon-btn" id="chatInfoBtn" aria-label="معلومات"><span data-icon="info" data-size="19"></span></button>
+      </div>
+
+      <div class="messages-container" id="messagesContainer">
+        <div id="messagesList"></div>
+        <div id="typingIndicator" class="typing-indicator hidden">
+          <div class="typing-bubble">
+            <div class="typing-avatar" id="typingAvatar"><img src="" class="hidden"><span>ن</span></div>
+            <div class="typing-dots"><span></span><span></span><span></span></div>
+            <span class="typing-text" id="typingText"></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="composer">
+        <div id="replyBar" class="reply-bar hidden">
+          <div class="reply-content">
+            <div class="reply-line"></div>
+            <div class="reply-info">
+              <span class="reply-name" id="replyName">اسم</span>
+              <span class="reply-text" id="replyText">نص</span>
+            </div>
+          </div>
+          <button class="reply-close" id="cancelReply" aria-label="إلغاء الرد"><span data-icon="close" data-size="16"></span></button>
+        </div>
+        <div class="composer-row">
+          <button class="attach-btn" id="attachBtn" aria-label="إرفاق"><span data-icon="attach" data-size="20"></span></button>
+          <div class="attach-menu" id="attachMenu">
+            <button class="attach-item" id="attachImage"><span data-icon="image" data-size="18"></span>صورة</button>
+            <button class="attach-item" id="attachVideo"><span data-icon="video" data-size="18"></span>فيديو</button>
+          </div>
+          <input type="text" id="messageInput" placeholder="اكتب رسالة..." autocomplete="off" disabled>
+          <button class="send-btn" id="sendBtn" disabled aria-label="إرسال"><span data-icon="send" data-size="20"></span></button>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ===== ADMIN SCREEN (opened from the shield button) ===== -->
+<div id="adminScreen" class="screen">
+  <header class="admin-head">
+    <button class="icon-btn" id="adminBackBtn" aria-label="رجوع"><span data-icon="back" data-size="20"></span></button>
+    <div class="admin-title">
+      <span class="admin-title-main">لوحة الإدارة</span>
+      <span class="admin-title-sub">التحكم الكامل في التطبيق</span>
+    </div>
+  </header>
+
+  <nav class="admin-seg">
+    <button class="admin-seg-btn active" data-atab="theme">الثيم</button>
+    <button class="admin-seg-btn" data-atab="admins">الأدمنية</button>
+    <button class="admin-seg-btn" data-atab="bans">الحظر</button>
+    <button class="admin-seg-btn" data-atab="verify">التوثيق</button>
+    <button class="admin-seg-btn" data-atab="bubble">شكل الرسائل</button>
+  </nav>
+
+  <div class="admin-body">
+    <div id="adminMsg" class="admin-msg form-error hidden"></div>
+
+    <section class="apane active" id="apane-theme">
+      <div class="card">
+        <h4><span data-icon="palette" data-size="18"></span>ثيم التطبيق</h4>
+        <p class="hint">الثيم يتغير عند كل المستخدمين فوراً.</p>
+        <div class="theme-grid" id="themeGrid"></div>
+      </div>
+    </section>
+
+    <section class="apane" id="apane-admins">
+      <div class="card">
+        <h4><span data-icon="shield" data-size="18"></span>إضافة أدمن</h4>
+        <div class="input-group"><label>اسم المستخدم أو البريد</label><input type="text" id="adminTarget" placeholder="@username أو example@mail.com"></div>
+        <button class="btn-primary" id="addAdminBtn">إضافة</button>
+      </div>
+      <div class="admin-list" id="adminsList"></div>
+    </section>
+
+    <section class="apane" id="apane-bans">
+      <div class="card">
+        <h4><span data-icon="ban" data-size="18"></span>حظر مستخدم</h4>
+        <div class="input-group"><label>المستخدم</label><input type="text" id="banTarget" placeholder="@username أو البريد"></div>
+        <div class="input-group"><label>نوع الحظر</label>
+          <select id="banType" class="admin-select">
+            <option value="temp">موقت: يومين</option>
+            <option value="disc">تأديبي: أسبوع</option>
+            <option value="perm">دائم</option>
+          </select>
+        </div>
+        <div class="input-group"><label>السبب (اختياري)</label><input type="text" id="banReason" maxlength="120" placeholder="سبب الحظر"></div>
+        <button class="btn-danger" id="banBtn">تنفيذ الحظر</button>
+      </div>
+      <div class="admin-list" id="bansList"></div>
+    </section>
+
+    <section class="apane" id="apane-verify">
+      <div class="card">
+        <h4><span data-icon="badge" data-size="18"></span>توثيق حساب</h4>
+        <div class="input-group"><label>المستخدم</label><input type="text" id="verifyTarget" placeholder="@username أو البريد"></div>
+        <div class="verify-btns">
+          <button class="btn-primary" id="verifyBlueBtn">توثيق أزرق</button>
+          <button class="btn-primary" id="verifyGoldBtn">توثيق ذهبي</button>
+          <button class="btn-danger" id="verifyRemoveBtn">إزالة التوثيق</button>
+        </div>
+      </div>
+      <div class="admin-list" id="verifiedList"></div>
+    </section>
+
+    <section class="apane" id="apane-bubble">
+      <div class="card">
+        <h4><span data-icon="bubble" data-size="18"></span>شكل فقاعة الرسالة</h4>
+        <div class="input-group"><label>الشكل</label>
+          <select id="bubbleStyle" class="admin-select">
+            <option value="rounded">مستديرة</option>
+            <option value="sharp">حادة</option>
+            <option value="pill">كبسولة</option>
+          </select>
+        </div>
+        <div class="range-row"><label>انحناء الزوايا</label><input type="range" id="bubbleRadius" min="0" max="30"></div>
+        <div class="range-row"><label>حجم الخط</label><input type="range" id="bubbleFont" min="12" max="20"></div>
+        <div class="range-row"><label>أقصى عرض للفقاعة</label><input type="range" id="bubbleMax" min="50" max="90"></div>
+        <div class="bubble-preview" id="bubblePreview"><div class="pv">معاينة الرسالة</div></div>
+        <button class="btn-primary" id="saveBubbleBtn">حفظ للجميع</button>
+      </div>
+    </section>
+  </div>
+</div>
+
+<!-- ===== BAN SCREEN ===== -->
+<div id="banScreen" class="screen">
+  <div class="ban-box">
+    <div class="ban-icon" data-icon="ban" data-size="30"></div>
+    <h2>تم حظر حسابك</h2>
+    <p id="banInfo"></p>
+    <button class="btn-danger" id="banLogoutBtn">تسجيل الخروج</button>
+  </div>
+</div>
+
+<!-- ===== CREATE / JOIN GROUP ===== -->
+<div id="createGroupModal" class="modal hidden">
+  <div class="modal-overlay"></div>
+  <div class="modal-content">
+    <div class="modal-header"><h3 id="groupModalTitle">الغرف</h3><button class="modal-close" id="closeGroupModal"><span data-icon="close" data-size="18"></span></button></div>
+    <div class="seg">
+      <button class="seg-btn active" data-gtab="create">إنشاء غرفة</button>
+      <button class="seg-btn" data-gtab="join">الانضمام بكود</button>
+    </div>
+    <div class="modal-body">
+      <div id="createGroupPane" class="auth-form active">
+        <div class="group-avatar-upload">
+          <div class="group-avatar" id="groupAvatarPreview"><span>غ</span></div>
+          <label class="btn-text file-pick" id="changeGroupAvatar">تغيير الصورة<input type="file" id="groupAvatarFileInput" accept="image/*" class="pick-input"></label>
+        </div>
+        <div class="input-group"><label>اسم الغرفة</label><input type="text" id="groupNameInput" placeholder="اسم الغرفة" maxlength="30"></div>
+        <div class="input-group"><label>الوصف (اختياري)</label><input type="text" id="groupDescInput" placeholder="وصف قصير" maxlength="100"></div>
+        <div id="groupError" class="form-error hidden"></div>
+        <button id="createGroupBtn" class="btn-primary">إنشاء الغرفة</button>
+      </div>
+      <div id="joinGroupPane" class="auth-form">
+        <div class="input-group">
+          <label>كود الغرفة</label>
+          <input type="text" id="joinCodeInput" placeholder="مثال: aB3@k9Xz!1" maxlength="10" style="text-align:left;direction:ltr;">
+        </div>
+        <div id="joinGroupError" class="form-error hidden"></div>
+        <button id="joinGroupBtn" class="btn-primary">انضمام</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== GROUP INFO ===== -->
+<div id="groupInfoModal" class="modal hidden">
+  <div class="modal-overlay"></div>
+  <div class="modal-content">
+    <div class="modal-header"><h3>معلومات الغرفة</h3><button class="modal-close" id="closeGroupInfo"><span data-icon="close" data-size="18"></span></button></div>
+    <div class="modal-body">
+      <div class="group-info-header">
+        <div class="group-info-avatar" id="groupInfoAvatar"><span>غ</span></div>
+        <h4 id="groupInfoName">اسم</h4>
+        <p class="group-info-desc" id="groupInfoDesc">وصف</p>
+        <span class="group-info-count" id="groupInfoCount">0 عضو</span>
+      </div>
+      <div class="input-group">
+        <label>كود الدعوة</label>
+        <div class="copy-row">
+          <input type="text" id="groupInfoCode" readonly>
+          <button class="btn-primary sm" id="copyGroupCode">نسخ</button>
+        </div>
+      </div>
+      <div class="members-list" id="membersList"></div>
+      <button id="deleteGroupBtn" class="btn-danger hidden">حذف الغرفة</button>
+      <button id="leaveGroupBtn" class="btn-danger hidden">مغادرة الغرفة</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PROFILE ===== -->
+<div id="profileModal" class="modal hidden">
+  <div class="modal-overlay"></div>
+  <div class="modal-content">
+    <div class="modal-header"><h3>الملف الشخصي</h3><button class="modal-close" id="closeProfile"><span data-icon="close" data-size="18"></span></button></div>
+    <div class="modal-body">
+      <div class="profile-avatar-section">
+        <div class="profile-avatar" id="profileAvatar"><img src="" class="hidden"><span>ن</span></div>
+        <label class="btn-text file-pick" id="changeProfileAvatar"><span data-icon="camera" data-size="15"></span> تغيير الصورة<input type="file" id="avatarFileInput" accept="image/*" class="pick-input"></label>
+      </div>
+      <div class="profile-info">
+        <div class="profile-field"><label>الاسم</label><span id="profileName">---</span></div>
+        <div class="profile-field"><label>اسم المستخدم</label><span id="profileUsername">---</span></div>
+        <div class="profile-field"><label>البريد</label><span id="profileEmail">---</span></div>
+      </div>
+      <button id="logoutBtn" class="btn-danger"><span data-icon="logout" data-size="16"></span> تسجيل الخروج</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="mediaFileInput" accept="image/*,video/*" class="hidden-input">
+
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.13.0/firebase-database-compat.js"></script>
+<script src="ui.js?v=12"></script>
+<script src="script.js?v=12"></script>
+<script src="features.js?v=13"></script>
+<script src="admin.js?v=12"></script>
+<script src="stories.js?v=1"></script>
+</body>
+</html>

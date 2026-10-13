@@ -1,0 +1,115 @@
+/* ===== Verification badges ===== */
+.vbadge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 15px; height: 15px; border-radius: 50%;
+  margin-inline-start: 4px; font-size: 10px; font-weight: 900;
+  color: #fff; vertical-align: middle; flex-shrink: 0; line-height: 1;
+}
+.vbadge-blue { background: #1d9bf0; }
+.vbadge-gold {
+  background: linear-gradient(135deg, #f7e08a, #d4af37 50%, #a8841f);
+  color: #2b1d00; box-shadow: 0 0 6px rgba(212, 175, 55, 0.45);
+}
+
+/* ===== Chat bubble style (set globally by admin) ===== */
+.msg-bubble {
+  border-radius: var(--bubble-radius, 18px) !important;
+  font-size: var(--bubble-font, 15px) !important;
+  max-width: var(--bubble-max, 70%) !important;
+}
+
+/* ===== Admin panel ===== */
+.admin-content {
+  max-width: 520px; width: calc(100% - 24px);
+  max-height: 88vh; max-height: 88dvh;
+  display: flex; flex-direction: column;
+}
+.admin-content .modal-body { overflow-y: auto; }
+.admin-tabs {
+  display: flex; gap: 6px; overflow-x: auto;
+  padding: 0 16px 10px; scrollbar-width: none;
+}
+.admin-tabs::-webkit-scrollbar { display: none; }
+.admin-tab {
+  flex-shrink: 0; background: var(--surface); border: 1px solid var(--border);
+  color: var(--text-secondary); padding: 7px 12px; border-radius: 20px;
+  font-family: inherit; font-size: 12px; font-weight: 700; cursor: pointer;
+}
+.admin-tab.active { background: var(--accent); color: #000; border-color: var(--accent); }
+.apane { display: none; }
+.apane.active { display: block; }
+.admin-hint { font-size: 12px; color: var(--text-muted); margin: 8px 0; }
+.admin-select {
+  width: 100%; padding: 11px 14px; background: var(--bg-tertiary);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  color: var(--text); font-family: inherit; font-size: 14px;
+}
+.theme-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.theme-chip {
+  height: 72px; border-radius: var(--radius); border: 2px solid transparent;
+  color: #fff; font-family: inherit; font-weight: 800; font-size: 13px;
+  cursor: pointer; text-shadow: 0 1px 3px #000;
+  display: flex; align-items: flex-end; justify-content: center; padding: 8px;
+}
+.theme-chip.active { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-glow); }
+.verify-btns { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.verify-btns button { flex: 1; min-width: 110px; }
+.btn-gold {
+  background: linear-gradient(135deg, #f7e08a, #d4af37, #a8841f);
+  color: #1a1200; border: none; border-radius: var(--radius);
+  padding: 12px 16px; font-family: inherit; font-weight: 800; cursor: pointer;
+}
+.admin-list { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+.admin-row {
+  display: flex; align-items: center; gap: 10px;
+  background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 10px 12px;
+}
+.admin-row-info { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.admin-row-info b { display: flex; align-items: center; }
+.admin-row-info small { color: var(--text-muted); font-size: 12px; }
+.owner-pill {
+  background: var(--accent); color: #000; font-size: 11px;
+  font-weight: 800; padding: 3px 8px; border-radius: 20px;
+}
+.mini-btn {
+  background: var(--surface-hover); border: 1px solid var(--border-light);
+  color: var(--text); font-family: inherit; font-size: 11px; font-weight: 700;
+  padding: 5px 10px; border-radius: 14px; cursor: pointer;
+}
+.mini-btn.danger { color: var(--danger); border-color: rgba(239, 68, 68, 0.35); }
+.member-actions { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
+.bubble-preview {
+  background: var(--bg-tertiary); border-radius: var(--radius);
+  padding: 16px; margin: 10px 0 14px; display: flex; justify-content: flex-start;
+}
+.bubble-preview .pv {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color: #000; padding: 10px 14px; font-weight: 600;
+  border-radius: var(--bubble-radius, 18px);
+  font-size: var(--bubble-font, 15px);
+  max-width: var(--bubble-max, 70%);
+}
+.form-error.ok {
+  background: rgba(34, 197, 94, 0.12); color: var(--success);
+  border-color: rgba(34, 197, 94, 0.3);
+}
+#adminMsg { margin-bottom: 10px; }
+
+/* ===== Ban screen ===== */
+#banScreen {
+  z-index: 500; background: var(--bg);
+  align-items: center; justify-content: center; padding: 24px;
+}
+.ban-box {
+  max-width: 360px; width: 100%; text-align: center;
+  background: var(--surface); border: 1px solid rgba(239, 68, 68, 0.35);
+  border-radius: var(--radius-xl); padding: 32px 24px;
+}
+.ban-icon { font-size: 48px; margin-bottom: 10px; }
+.ban-box h2 { margin-bottom: 10px; }
+.ban-box p { color: var(--text-secondary); font-size: 14px; line-height: 1.8; margin-bottom: 22px; }
+.ban-box .btn-danger { width: 100%; }
+
+/* ===== Groups: leave button sits with the other info-modal actions ===== */
+#leaveGroupBtn { margin-top: 12px; width: 100%; }
