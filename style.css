@@ -391,3 +391,6 @@ body {
   .tasbih-count { font-size: 44px; }
   .user-name { display: none; }
 }
+
+/* ---------- Fix: hidden attribute must win over component display rules ---------- */
+[hidden] { display: none !important; }

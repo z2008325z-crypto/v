@@ -626,27 +626,56 @@ $('#authModal').addEventListener('click', e => { if (e.target.id === 'authModal'
 
 const msg = (id, m, ok) => { const e = $(id); e.textContent = m; e.className = 'auth-msg ' + (ok ? 'ok' : 'err'); };
 
+const AUTH_ERR = {
+  'auth/invalid-credential': 'البريد أو كلمة المرور غير صحيحة',
+  'auth/wrong-password': 'كلمة المرور غير صحيحة',
+  'auth/user-not-found': 'لا يوجد حساب بهذا البريد',
+  'auth/email-already-in-use': 'هذا البريد مسجّل بالفعل',
+  'auth/weak-password': 'كلمة المرور قصيرة (6 أحرف على الأقل)',
+  'auth/invalid-email': 'صيغة البريد الإلكتروني غير صحيحة',
+  'auth/user-disabled': 'هذا الحساب موقوف',
+  'auth/too-many-requests': 'محاولات كثيرة، حاول لاحقاً',
+  'auth/network-request-failed': 'تحقق من اتصالك بالإنترنت',
+  'auth/popup-closed-by-user': 'أُغلقت نافذة تسجيل الدخول',
+  'auth/unauthorized-domain': 'هذا النطاق غير مصرّح به في إعدادات Firebase',
+  'auth/invalid-phone-number': 'رقم الهاتف غير صحيح',
+  'auth/missing-phone-number': 'اكتب رقم الهاتف أولاً',
+  'auth/quota-exceeded': 'تم تجاوز حد الرسائل، حاول لاحقاً',
+  'auth/captcha-check-failed': 'فشل التحقق reCAPTCHA، حاول مرة أخرى',
+  'auth/invalid-verification-code': 'رمز التحقق غير صحيح',
+  'auth/code-expired': 'انتهت صلاحية الرمز، اطلب رمزاً جديداً',
+  'auth/missing-verification-code': 'اكتب رمز التحقق أولاً'
+};
+function errText(e) {
+  return AUTH_ERR[e && e.code] || 'حدث خطأ، حاول مرة أخرى';
+}
+
 $('#loginBtn').addEventListener('click', async () => {
   try {
     await auth.signInWithEmailAndPassword($('#emailInput').value.trim(), $('#passwordInput').value);
     msg('#emailMsg', 'تم تسجيل الدخول بنجاح', true); closeAuth();
-  } catch (e) { msg('#emailMsg', e.message.replace('Firebase:', ''), false); }
+  } catch (e) { msg('#emailMsg', errText(e), false); }
 });
 $('#signupBtn').addEventListener('click', async () => {
   try {
     await auth.createUserWithEmailAndPassword($('#emailInput').value.trim(), $('#passwordInput').value);
     msg('#emailMsg', 'تم إنشاء الحساب بنجاح', true); closeAuth();
-  } catch (e) { msg('#emailMsg', e.message.replace('Firebase:', ''), false); }
+  } catch (e) { msg('#emailMsg', errText(e), false); }
 });
 $('#resetBtn').addEventListener('click', async () => {
   const em = $('#emailInput').value.trim();
   if (!em) return msg('#emailMsg', 'اكتب بريدك أولاً', false);
   try { await auth.sendPasswordResetEmail(em); msg('#emailMsg', 'أُرسل رابط الاستعادة إلى بريدك', true); }
-  catch (e) { msg('#emailMsg', e.message.replace('Firebase:', ''), false); }
+  catch (e) { msg('#emailMsg', errText(e), false); }
 });
 
 /* Phone */
 let confirmationResult = null;
+function resetRecaptcha() {
+  try { window.recaptchaVerifier && window.recaptchaVerifier.clear(); } catch {}
+  window.recaptchaVerifier = null;
+  $('#recaptcha-container').innerHTML = '';
+}
 function initRecaptcha() {
   if (window.recaptchaVerifier) return;
   window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('recaptcha-container', { size: 'normal' });
@@ -665,13 +694,13 @@ $('#sendCodeBtn').addEventListener('click', async () => {
     confirmationResult = await auth.signInWithPhoneNumber(phone, window.recaptchaVerifier);
     $('#codeStep').hidden = false;
     msg('#phoneMsg', 'تم إرسال رمز التحقق', true);
-  } catch (e) { msg('#phoneMsg', e.message.replace('Firebase:', ''), false); }
+  } catch (e) { resetRecaptcha(); msg('#phoneMsg', errText(e), false); }
 });
 $('#verifyCodeBtn').addEventListener('click', async () => {
   try {
     await confirmationResult.confirm($('#codeInput').value.trim());
     msg('#phoneMsg', 'تم تسجيل الدخول بنجاح', true); closeAuth();
-  } catch (e) { msg('#phoneMsg', 'رمز غير صحيح', false); }
+  } catch (e) { msg('#phoneMsg', errText(e), false); }
 });
 
 /* Google */
@@ -684,7 +713,7 @@ function onGoogleToken(resp) {
   const cred = firebase.auth.GoogleAuthProvider.credential(resp.credential);
   auth.signInWithCredential(cred)
     .then(() => { msg('#googleMsg', 'تم تسجيل الدخول بنجاح', true); closeAuth(); })
-    .catch(e => msg('#googleMsg', e.message.replace('Firebase:', ''), false));
+    .catch(e => msg('#googleMsg', errText(e), false));
 }
 
 function renderAuthArea(user) {
@@ -707,8 +736,12 @@ function renderAuthArea(user) {
 auth.onAuthStateChanged(async u => {
   renderAuthArea(u);
   if (u) {
-    const snap = await db.ref('users/' + u.uid).get();
-    if (!snap.exists()) await db.ref('users/' + u.uid).set({ created: Date.now() });
+    try {
+      const snap = await db.ref('users/' + u.uid).get();
+      if (!snap.exists()) await db.ref('users/' + u.uid).set({ created: Date.now() });
+    } catch (e) {
+      console.warn('تعذّر حفظ بيانات المستخدم:', e);
+    }
   }
   refreshFavIcons();
 });
