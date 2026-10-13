@@ -1,342 +1,107 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ورد | منصة إسلامية شاملة</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Tajawal:wght@300;400;500;700;800&family=Reem+Kufi:wght@400;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><path d='M50 5 A40 40 0 1 0 90 50 A32 32 0 1 1 50 5Z' fill='%23c9a227'/></svg>">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>يحب</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <div class="aurora"><span></span><span></span><span></span></div>
+  <div id="toast" class="toast"></div>
 
-<div class="bg-pattern" aria-hidden="true"></div>
+  <!-- شاشة الدخول -->
+  <section id="auth-screen" class="screen hidden">
+    <div class="auth-wrap glass fade-in">
+      <h1 class="logo">يحب</h1>
+      <p class="tagline">مساحة صغيرة لكل الكلام</p>
 
-<header class="header">
-  <div class="header-inner">
-    <a class="brand" href="#home">
-      <svg class="brand-logo" viewBox="0 0 100 100" aria-hidden="true"><path d="M50 5 A40 40 0 1 0 90 50 A32 32 0 1 1 50 5Z" fill="currentColor"/><circle cx="72" cy="30" r="4" fill="currentColor"/></svg>
-      <span class="brand-name">وَرْد</span>
-    </a>
-    <nav class="nav" id="mainNav">
-      <a href="#home" data-route="home">الرئيسية</a>
-      <a href="#quran" data-route="quran">القرآن الكريم</a>
-      <a href="#hadith" data-route="hadith">الحديث الشريف</a>
-      <a href="#azkar" data-route="azkar">الأذكار</a>
-      <a href="#prayer" data-route="prayer">مواقيت الصلاة</a>
-      <a href="#tasbih" data-route="tasbih">المسبحة</a>
-      <a href="#qibla" data-route="qibla">القبلة</a>
-      <a href="#favorites" data-route="favorites">محفوظاتي</a>
-    </nav>
-    <div class="auth-area" id="authArea"></div>
-    <button class="nav-toggle" id="navToggle" aria-label="القائمة">
-      <svg viewBox="0 0 24 24"><path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round" fill="none"/></svg>
-    </button>
-  </div>
-</header>
-
-<main class="main">
-
-  <!-- ===================== HOME ===================== -->
-  <section id="sec-home" class="page active">
-    <div class="hero">
-      <svg class="hero-ornament" viewBox="0 0 200 200" aria-hidden="true">
-        <g fill="none" stroke="currentColor" stroke-width="1.2" opacity=".55">
-          <circle cx="100" cy="100" r="88"/><circle cx="100" cy="100" r="66"/>
-          <path d="M100 34l8 18 18 8-18 8-8 18-8-18-18-8 18-8z"/>
-          <path d="M40 100h18M142 100h18M100 40v18M100 142v18"/>
-        </g>
-      </svg>
-      <h1 class="hero-title">وَرْد</h1>
-      <p class="hero-sub">رفيقك اليومي للقرآن الكريم، الحديث النبوي، الأذكار، ومواقيت الصلاة</p>
-      <div class="hero-hijri" id="hijriDate">جارِ التحقق من التاريخ الهجري...</div>
-    </div>
-
-    <div class="grid-2">
-      <div class="card daily-card">
-        <div class="card-head">
-          <svg class="ic" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9z" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>
-          <h2>وِرد اليوم من القرآن</h2>
-        </div>
-        <p class="quran-text" id="dailyAyah">...</p>
-        <p class="daily-ref" id="dailyAyahRef"></p>
-        <button class="btn ghost" id="newAyahBtn">آية أخرى</button>
+      <div class="switch">
+        <button type="button" id="tab-login" class="switch-btn active">دخول</button>
+        <button type="button" id="tab-signup" class="switch-btn">حساب جديد</button>
       </div>
 
-      <div class="card daily-card">
-        <div class="card-head">
-          <svg class="ic" viewBox="0 0 24 24"><path d="M21 11.5a8.4 8.4 0 0 1-8.5 8.4 8.6 8.6 0 0 1-3.7-.8L3 21l2-5.5a8.3 8.3 0 0 1-.9-3.9A8.4 8.4 0 0 1 12.6 3a8.4 8.4 0 0 1 8.4 8.5z" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
-          <h2>حديث اليوم</h2>
-        </div>
-        <p class="hadith-text" id="dailyHadith">...</p>
-        <p class="daily-ref" id="dailyHadithRef"></p>
-        <button class="btn ghost" id="newHadithBtn">حديث آخر</button>
-      </div>
-    </div>
+      <form id="auth-form" autocomplete="on">
+        <input id="auth-name" class="field hidden" placeholder="الاسم" maxlength="30">
+        <input id="auth-email" type="email" class="field" placeholder="البريد الإلكتروني" required>
+        <input id="auth-pass" type="password" class="field" placeholder="كلمة السر" minlength="6" required>
+        <button class="btn shine primary full" id="auth-submit" type="submit">دخول</button>
+      </form>
 
-    <div class="card next-prayer-card">
-      <div class="card-head">
-        <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3 3" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
-        <h2>الصلاة القادمة</h2>
-      </div>
-      <div id="nextPrayerHome" class="next-prayer-box">حدّد موقعك لعرض المواقيت</div>
-      <a class="btn" href="#prayer">كل المواقيت</a>
-    </div>
-
-    <div class="features">
-      <a href="#quran" class="feature">
-        <svg viewBox="0 0 48 48"><path d="M24 8C18 5 10 5 6 7v30c4-2 12-2 18 1 6-3 14-3 18-1V7c-4-2-12-2-18 1z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M24 8v30" stroke="currentColor" stroke-width="2"/></svg>
-        <h3>القرآن الكريم</h3><p>تصفح واستمع لجميع السور بتلاوة مشاهير القراء</p>
-      </a>
-      <a href="#hadith" class="feature">
-        <svg viewBox="0 0 48 48"><path d="M10 10h28v22H22l-8 7v-7h-4z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><circle cx="17" cy="21" r="1.6" fill="currentColor"/><circle cx="24" cy="21" r="1.6" fill="currentColor"/><circle cx="31" cy="21" r="1.6" fill="currentColor"/></svg>
-        <h3>الحديث الشريف</h3><p>أمهات كتب السنة مع التخريج والبحث</p>
-      </a>
-      <a href="#azkar" class="feature">
-        <svg viewBox="0 0 48 48"><path d="M24 42s-16-9-16-20a8 8 0 0 1 16-1 8 8 0 0 1 16 1c0 11-16 20-16 20z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-        <h3>الأذكار</h3><p>أذكار الصباح والمساء والصلوات بعدّاد تفاعلي</p>
-      </a>
-      <a href="#tasbih" class="feature">
-        <svg viewBox="0 0 48 48"><circle cx="24" cy="24" r="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="24" cy="10" r="3.4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="36" cy="17" r="3.4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="36" cy="31" r="3.4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="24" cy="38" r="3.4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="31" r="3.4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="17" r="3.4" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-        <h3>المسبحة الرقمية</h3><p>عداد تسبيح بأذكار متنوعة وإحصائيات</p>
-      </a>
+      <div class="divider"><span>أو</span></div>
+      <button class="btn shine full" id="google-btn" type="button">الدخول بحساب Google</button>
+      <p id="auth-error" class="error"></p>
     </div>
   </section>
 
-  <!-- ===================== QURAN ===================== -->
-  <section id="sec-quran" class="page">
-    <div class="page-head">
-      <h2>القرآن الكريم</h2>
-      <p>استمع وتدبّر — الاستماع بصوت الشيخ مشاري راشد العفاسي</p>
-    </div>
-    <div class="toolbar">
-      <div class="search-box">
-        <svg class="ic" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M20 20l-4-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        <input type="text" id="surahSearch" placeholder="ابحث باسم السورة أو رقمها...">
+  <!-- التطبيق -->
+  <section id="app-screen" class="screen hidden">
+    <header class="topbar glass">
+      <span class="logo small">يحب</span>
+      <nav class="tabs">
+        <button class="btn tab active" data-tab="feed">الرئيسية</button>
+        <button class="btn tab" data-tab="profile">حسابي</button>
+        <button class="btn tab admin-only hidden" data-tab="admin">الأدمن</button>
+      </nav>
+      <button class="btn shine ghost" id="logout-btn" type="button">خروج</button>
+    </header>
+
+    <main>
+      <!-- الرئيسية -->
+      <div id="tab-feed" class="page">
+        <div class="glass card composer">
+          <textarea id="post-text" placeholder="ماذا يحدث؟" maxlength="500"></textarea>
+          <input id="post-image" class="field" placeholder="رابط صورة (اختياري) https://...">
+          <div class="row-end">
+            <span class="counter" id="counter">0/500</span>
+            <button class="btn shine primary" id="post-btn" type="button">نشر</button>
+          </div>
+        </div>
+        <div id="feed"></div>
       </div>
-    </div>
-    <div class="quran-layout">
-      <div class="surah-list" id="surahList"><div class="skeleton"></div></div>
-      <div class="reader" id="reader">
-        <div class="reader-empty">
-          <svg viewBox="0 0 96 96" class="empty-art"><path d="M48 12C36 7 20 7 12 11v58c8-4 24-4 36 1 12-5 28-5 36-1V11c-8-4-24-4-36 1z" fill="none" stroke="currentColor" stroke-width="2"/><path d="M48 12v59" stroke="currentColor" stroke-width="2"/></svg>
-          <p>اختر سورة لبدء القراءة والاستماع</p>
+
+      <!-- الملف الشخصي -->
+      <div id="tab-profile" class="page hidden">
+        <div class="glass card" id="profile-card"></div>
+        <div class="glass card">
+          <h3>تعديل الاسم</h3>
+          <input id="edit-name" class="field" maxlength="30">
+          <button class="btn shine primary" id="save-name" type="button">حفظ</button>
         </div>
       </div>
-    </div>
-  </section>
 
-  <!-- ===================== HADITH ===================== -->
-  <section id="sec-hadith" class="page">
-    <div class="page-head">
-      <h2>الحديث الشريف</h2>
-      <p>من أمهات كتب السنة النبوية</p>
-    </div>
-    <div class="hadith-layout">
-      <div class="book-list" id="bookList"><div class="skeleton"></div></div>
-      <div class="hadith-panel" id="hadithPanel">
-        <div class="reader-empty">
-          <svg viewBox="0 0 96 96" class="empty-art"><path d="M20 22h56v40H44l-14 11V62h-10z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>
-          <p>اختر كتاباً لعرض الأحاديث</p>
+      <!-- الأدمن -->
+      <div id="tab-admin" class="page hidden">
+        <div class="glass card">
+          <h3>هوية الموقع</h3>
+          <div class="color-row">
+            <label>لون الخلفية<input type="color" id="set-bg" value="#000000"></label>
+            <label>لون التمييز<input type="color" id="set-accent" value="#4f8cff"></label>
+          </div>
+          <button class="btn shine primary" id="save-settings" type="button">حفظ الألوان</button>
+        </div>
+
+        <div class="glass card">
+          <h3>المستخدمون والتوثيق</h3>
+          <input id="user-search" class="field" placeholder="ابحث بالاسم أو الإيميل">
+          <div id="users-list"></div>
+        </div>
+
+        <div class="glass card">
+          <h3>المهام</h3>
+          <form id="task-form" class="inline-form">
+            <input id="task-input" class="field" placeholder="مهمة جديدة" maxlength="120">
+            <button class="btn shine primary" type="submit">إضافة</button>
+          </form>
+          <div id="tasks-list"></div>
         </div>
       </div>
-    </div>
+    </main>
   </section>
 
-  <!-- ===================== AZKAR ===================== -->
-  <section id="sec-azkar" class="page">
-    <div class="page-head">
-      <h2>الأذكار</h2>
-      <p>اضغط على الذكر للعدّ حتى إتمام وردك</p>
-    </div>
-    <div class="azkar-tabs" id="azkarTabs">
-      <button class="tab active" data-cat="morning">أذكار الصباح</button>
-      <button class="tab" data-cat="evening">أذكار المساء</button>
-      <button class="tab" data-cat="afterPrayer">أذكار بعد الصلاة</button>
-    </div>
-    <div class="azkar-list" id="azkarList"><div class="skeleton"></div></div>
-  </section>
-
-  <!-- ===================== PRAYER ===================== -->
-  <section id="sec-prayer" class="page">
-    <div class="page-head">
-      <h2>مواقيت الصلاة</h2>
-      <p>حسب موقعك الجغرافي أو مدينة تختارها</p>
-    </div>
-    <div class="card prayer-controls">
-      <button class="btn" id="locateBtn">
-        <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        استخدم موقعي
-      </button>
-      <div class="city-form">
-        <input type="text" id="cityInput" placeholder="اسم المدينة (مثال: القاهرة)">
-        <button class="btn ghost" id="cityBtn">بحث</button>
-      </div>
-      <select id="methodSelect" class="select">
-        <option value="5">الهيئة المصرية العامة للمساحة</option>
-        <option value="4">أم القرى - مكة المكرمة</option>
-        <option value="2">الجمعية الإسلامية لأمريكا الشمالية</option>
-        <option value="3">رابطة العالم الإسلامي</option>
-      </select>
-    </div>
-    <div class="prayer-grid" id="prayerGrid"></div>
-  </section>
-
-  <!-- ===================== TASBIH ===================== -->
-  <section id="sec-tasbih" class="page">
-    <div class="page-head">
-      <h2>المسبحة الرقمية</h2>
-      <p>اضغط على الحلقة للتسبيح</p>
-    </div>
-    <div class="tasbih-wrap">
-      <div class="tasbih-controls">
-        <select id="dhikrSelect" class="select">
-          <option>سبحان الله</option>
-          <option>الحمد لله</option>
-          <option>الله أكبر</option>
-          <option>لا إله إلا الله</option>
-          <option>أستغفر الله</option>
-          <option>لا حول ولا قوة إلا بالله</option>
-          <option>سبحان الله وبحمده</option>
-          <option>اللهم صلِّ على محمد</option>
-        </select>
-        <div class="tasbih-targets">
-          <button class="chip" data-target="33">33</button>
-          <button class="chip active" data-target="100">100</button>
-          <button class="chip" data-target="1000">1000</button>
-        </div>
-        <button class="btn ghost" id="tasbihReset">تصفير العداد</button>
-      </div>
-      <button class="tasbih-ring" id="tasbihRing" aria-label="سبّح">
-        <svg viewBox="0 0 200 200" class="ring-svg">
-          <circle cx="100" cy="100" r="88" fill="none" stroke="currentColor" stroke-width="3" opacity=".25" id="ringProgress"/>
-          <circle cx="100" cy="100" r="88" fill="none" stroke="currentColor" stroke-width="3"
-                  stroke-linecap="round" id="ringFg"
-                  stroke-dasharray="552.9" stroke-dashoffset="552.9"
-                  transform="rotate(-90 100 100)"/>
-        </svg>
-        <span class="tasbih-count" id="tasbihCount">0</span>
-        <span class="tasbih-dhikr" id="tasbihDhikr">سبحان الله</span>
-      </button>
-      <div class="tasbih-stats">
-        <div class="stat"><span id="tasbihTotal">0</span><label>مجموع التسبيحات</label></div>
-        <div class="stat"><span id="tasbihRounds">0</span><label>جولات مكتملة</label></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== QIBLA ===================== -->
-  <section id="sec-qibla" class="page">
-    <div class="page-head">
-      <h2>اتجاه القبلة</h2>
-      <p>من موقعك الحالي نحو الكعبة المشرفة</p>
-    </div>
-    <div class="card qibla-card">
-      <button class="btn" id="qiblaLocateBtn">
-        <svg class="ic" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3" fill="none" stroke="currentColor" stroke-width="1.8"/><path d="M12 2v4M12 18v4M2 12h4M18 12h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-        حدّد موقعي لحساب القبلة
-      </button>
-      <div class="qibla-result" id="qiblaResult"></div>
-      <div class="compass-wrap" id="compassWrap" hidden>
-        <svg viewBox="0 0 260 260" class="compass">
-          <circle cx="130" cy="130" r="120" fill="none" stroke="currentColor" stroke-width="2" opacity=".3"/>
-          <circle cx="130" cy="130" r="100" fill="none" stroke="currentColor" stroke-width="1" opacity=".2"/>
-          <g class="dial" id="compassDial">
-            <text x="130" y="30" text-anchor="middle">ش</text>
-            <text x="235" y="135" text-anchor="middle">ق</text>
-            <text x="130" y="240" text-anchor="middle">ج</text>
-            <text x="25" y="135" text-anchor="middle">غ</text>
-          </g>
-          <g id="qiblaNeedle">
-            <path d="M130 45 L142 130 L130 118 L118 130 Z" fill="var(--gold)"/>
-          </g>
-          <circle cx="130" cy="130" r="7" fill="var(--gold)"/>
-        </svg>
-        <p class="qibla-degree" id="qiblaDegree"></p>
-        <input type="range" id="manualRotate" min="0" max="360" value="0" class="slider">
-        <label class="slider-label">دوّر البوصلة يدوياً للمواءمة مع الشمال الحقيقي</label>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===================== FAVORITES ===================== -->
-  <section id="sec-favorites" class="page">
-    <div class="page-head">
-      <h2>محفوظاتي</h2>
-      <p>آياتك وأحاديثك المحفوظة — تُحفظ في حسابك عند تسجيل الدخول</p>
-    </div>
-    <div id="favList" class="fav-list"></div>
-  </section>
-
-</main>
-
-<!-- Surah audio player bar -->
-<div class="player-bar" id="playerBar" hidden>
-  <div class="player-info">
-    <span id="playerTitle">—</span>
-    <span id="playerAyah">—</span>
-  </div>
-  <div class="player-actions">
-    <button class="pbtn" id="playerPrev" aria-label="السابق"><svg viewBox="0 0 24 24"><path d="M19 5l-9 7 9 7V5zM8 5H5v14h3z" fill="currentColor"/></svg></button>
-    <button class="pbtn main" id="playerToggle" aria-label="تشغيل / إيقاف"><svg viewBox="0 0 24 24" id="playerToggleIcon"><path d="M7 4l13 8-13 8z" fill="currentColor"/></svg></button>
-    <button class="pbtn" id="playerNext" aria-label="التالي"><svg viewBox="0 0 24 24"><path d="M5 5l9 7-9 7V5zM16 5h3v14h-3z" fill="currentColor"/></svg></button>
-    <button class="pbtn" id="playerClose" aria-label="إغلاق"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
-  </div>
-</div>
-
-<!-- Auth modal -->
-<div class="modal-backdrop" id="authModal" hidden>
-  <div class="modal">
-    <button class="modal-close" id="authClose" aria-label="إغلاق"><svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
-    <h3 class="modal-title">تسجيل الدخول إلى وَرْد</h3>
-
-    <div class="auth-tabs">
-      <button class="tab active" data-atab="email">البريد الإلكتروني</button>
-      <button class="tab" data-atab="phone">رقم الهاتف</button>
-      <button class="tab" data-atab="google">Google</button>
-    </div>
-
-    <div class="auth-pane active" id="pane-email">
-      <input type="email" id="emailInput" class="input" placeholder="البريد الإلكتروني">
-      <input type="password" id="passwordInput" class="input" placeholder="كلمة المرور">
-      <div class="auth-actions">
-        <button class="btn" id="loginBtn">دخول</button>
-        <button class="btn ghost" id="signupBtn">إنشاء حساب</button>
-      </div>
-      <button class="link-btn" id="resetBtn">نسيت كلمة المرور؟</button>
-      <p class="auth-msg" id="emailMsg"></p>
-    </div>
-
-    <div class="auth-pane" id="pane-phone">
-      <div class="phone-row">
-        <span class="phone-prefix">+20</span>
-        <input type="tel" id="phoneInput" class="input" placeholder="1XXXXXXXXX">
-      </div>
-      <div id="recaptcha-container"></div>
-      <button class="btn" id="sendCodeBtn">إرسال رمز التحقق</button>
-      <div id="codeStep" hidden>
-        <input type="text" id="codeInput" class="input" placeholder="رمز التحقق المكوّن من 6 أرقام">
-        <button class="btn" id="verifyCodeBtn">تأكيد الرمز</button>
-      </div>
-      <p class="auth-msg" id="phoneMsg"></p>
-    </div>
-
-    <div class="auth-pane" id="pane-google">
-      <p class="google-hint">سجّل الدخول بحساب Google الخاص بك بضغطة واحدة</p>
-      <div id="googleBtnWrap"></div>
-      <p class="auth-msg" id="googleMsg"></p>
-    </div>
-  </div>
-</div>
-
-<div class="toast" id="toast" hidden></div>
-
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
-<script src="https://accounts.google.com/gsi/client" async defer></script>
-<script src="script.js"></script>
+  <script type="module" src="script.js"></script>
 </body>
 </html>
