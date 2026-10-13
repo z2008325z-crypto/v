@@ -169,7 +169,7 @@ $('#surahSearch').addEventListener('input', e => {
     s.name.includes(q) || s.englishName.toLowerCase().includes(q.toLowerCase()) || String(s.number) === q));
 });
 
-let currentSurah = null; // {number, name, ayahs:[{text, num, numInSurah, audio}]}
+let currentSurah = null;
 async function openSurah(n) {
   const reader = $('#reader');
   reader.innerHTML = '<div class="skeleton tall"></div>';
@@ -214,10 +214,8 @@ function renderReader() {
     if (player.queue.length && player.surah === s.number) togglePlay();
     else playSurah(s.number);
   });
-  $$('.ayah-play').forEach(b => b.addEventListener('click', e => {
-    e.stopPropagation(); playSingle(+b.dataset.i);
-  }));
-  $$('.ayah-fav').forEach(b => b.addEventListener('click', e => {
+  $$('.ayah-play').forEach(b => b.addEventListener('click', e => {     e.stopPropagation(); playSingle(+b.dataset.i);   }));$$
+('.ayah-fav').forEach(b => b.addEventListener('click', e => {
     e.stopPropagation(); toggleFav('ayah', b.dataset.i);
   }));
   refreshFavIcons();
@@ -354,7 +352,7 @@ async function loadHadithChunk(reset) {
 }
 
 /* ============================================================
-   AZKAR — from remote JSON
+   AZKAR
    ============================================================ */
 let azkarCache = null;
 const AZKAR_MAP = { morning: 'أذكار الصباح', evening: 'أذكار المساء', afterPrayer: 'أذكار بعد الصلاة' };
@@ -391,8 +389,8 @@ async function loadAzkar(cat) {
     listEl.innerHTML = '<p class="error-msg">تعذر تحميل الأذكار من الخادم. تحقق من الاتصال وحاول مجدداً.</p>';
   }
 }
-$$('#azkarTabs .tab').forEach(t => t.addEventListener('click', () => {
-  $$('#azkarTabs .tab').forEach(x => x.classList.remove('active'));
+$$('#azkarTabs .tab').forEach(t => t.addEventListener('click', () => {   $$
+('#azkarTabs .tab').forEach(x => x.classList.remove('active'));
   t.classList.add('active');
   loadAzkar(t.dataset.cat);
 }));
@@ -429,7 +427,6 @@ function renderPrayers(data) {
   const h = data.date.hijri;
   $('#hijriDate').textContent = `${h.weekday.ar}، ${h.day} ${h.month.ar} ${h.year} هـ`;
 
-  // next prayer
   clearInterval(prayerTimer);
   const now = new Date();
   const order = ['Fajr','Dhuhr','Asr','Maghrib','Isha'];
@@ -497,8 +494,8 @@ $('#tasbihRing').addEventListener('click', () => {
 });
 $('#tasbihReset').addEventListener('click', () => { tasbih.count = 0; saveTasbih(); renderTasbih(); });
 $('#dhikrSelect').addEventListener('change', renderTasbih);
-$$('.tasbih-targets .chip').forEach(c => c.addEventListener('click', () => {
-  $$('.tasbih-targets .chip').forEach(x => x.classList.remove('active'));
+$$('.tasbih-targets .chip').forEach(c => c.addEventListener('click', () => {$$
+('.tasbih-targets .chip').forEach(x => x.classList.remove('active'));
   c.classList.add('active');
   tasbih.target = +c.dataset.target; tasbih.count = 0;
   saveTasbih(); renderTasbih();
@@ -582,11 +579,8 @@ function favIcon(type, id) {
 async function refreshFavIcons() {
   const favs = await getFavs();
   toggleFav._cache = favs;
-  $$('.ayah-fav').forEach(b => {
-    const a = currentSurah && currentSurah.ayahs[+b.dataset.i];
-    if (a) b.innerHTML = favs.some(f => f.id === favKey('ayah', a.num)) ? svgBookmarkFill : svgBookmark;
-  });
-  $$('.hadith-fav').forEach(b => {
+  $$('.ayah-fav').forEach(b => {     const a = currentSurah && currentSurah.ayahs[+b.dataset.i];     if (a) b.innerHTML = favs.some(f => f.id === favKey('ayah', a.num)) ? svgBookmarkFill : svgBookmark;   });   $$
+('.hadith-fav').forEach(b => {
     b.innerHTML = favs.some(f => f.id === favKey('hadith', b.dataset.id)) ? svgBookmarkFill : svgBookmark;
   });
 }
@@ -628,13 +622,7 @@ async function renderFavorites() {
 function openAuth() { $('#authModal').hidden = false; }
 function closeAuth() { $('#authModal').hidden = true; }
 $('#authClose').addEventListener('click', closeAuth);
-$('#authModal').addEventListener('click', e => { if (e.target.id === 'authModal') closeAuth(); });
-
-$$('.auth-tabs .tab').forEach(t => t.addEventListener('click', () => {
-  $$('.auth-tabs .tab').forEach(x => x.classList.remove('active'));
-  t.classList.add('active');
-  $$('.auth-pane').forEach(p => p.classList.remove('active'));
-  $('#pane-' + t.dataset.atab).classList.add('active');
+$('#authModal').addEventListener('click', e => { if (e.target.id === 'authModal') closeAuth(); });  $$('.auth-tabs .tab').forEach(t => t.addEventListener('click', () => {$$('.auth-tabs .tab').forEach(x => x.classList.remove('active'));   t.classList.add('active');   $$('.auth-pane').forEach(p => p.classList.remove('active'));$('#pane-' + t.dataset.atab).classList.add('active');
 }));
 
 const msg = (id, m, ok) => { const e = $(id); e.textContent = m; e.className = 'auth-msg ' + (ok ? 'ok' : 'err'); };
@@ -681,7 +669,7 @@ $('#verifyCodeBtn').addEventListener('click', async () => {
   } catch (e) { msg('#phoneMsg', 'رمز غير صحيح', false); }
 });
 
-/* Google — GIS token ثم signInWithCredential */
+/* Google */
 function initGoogle() {
   if (!window.google || !google.accounts) return setTimeout(initGoogle, 500);
   google.accounts.id.initialize({ client_id: GOOGLE_CLIENT_ID, callback: onGoogleToken });
