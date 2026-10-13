@@ -99,14 +99,31 @@
       "$uid": {
         "$sid": {
           ".write": "auth != null && (auth.uid === $uid || root.child('admins/' + auth.uid).val() === true)",
-          "likes": {
-            "$liker": {
-              ".write": "auth != null && auth.uid === $liker",
-              ".validate": "newData.isBoolean() || !newData.exists()"
+          "reactions": {
+            "$who": {
+              ".write": "auth != null && auth.uid === $who",
+              ".validate": "newData.isString() || !newData.exists()"
+            }
+          },
+          "views": {
+            "$who": {
+              ".write": "auth != null && auth.uid === $who"
             }
           }
         }
       }
+    },
+    "calls": {
+      "$callee": {
+        ".read": "auth != null && auth.uid === $callee",
+        "$cid": {
+          ".write": "auth != null && (auth.uid === $callee || (newData.exists() ? newData.child('from').val() : data.child('from').val()) === auth.uid)"
+        }
+      }
+    },
+    "callSignals": {
+      ".read": "auth != null",
+      ".write": "auth != null"
     }
   }
 }

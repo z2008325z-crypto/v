@@ -84,3 +84,36 @@
 }
 .sv-like.liked { color: #ff4d6d; border-color: #ff4d6d; }
 .sv-like.liked .ico { fill: currentColor; }
+
+/* ===== REACTIONS, VIEWERS PANEL ===== */
+.sv-rx-bar {
+  display: flex; gap: 6px; padding: 8px; border-radius: 999px;
+  background: rgba(0,0,0,.45); border: 1px solid rgba(255,255,255,.2);
+}
+.sv-rx {
+  position: relative; width: 44px; height: 44px; border-radius: 50%; border: 0; cursor: pointer;
+  background: transparent; color: #fff; display: flex; align-items: center; justify-content: center;
+}
+.sv-rx.on { background: rgba(255,255,255,.18); color: var(--accent-light); }
+.sv-rx .rx-n {
+  position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%);
+  font-size: 10px; background: var(--accent); color: #120d00; border-radius: 999px; padding: 0 5px; line-height: 15px;
+}
+.sv-count { font-size: 11px; margin-inline-start: 4px; }
+.sv-icon { display: flex; align-items: center; justify-content: center; }
+.sv-icon.dark { background: rgba(255,255,255,.1); color: #fff; width: 32px; height: 32px; }
+.sv-viewers {
+  position: absolute; z-index: 4; left: 0; right: 0; bottom: 0; max-height: 60%;
+  background: var(--surface); border-radius: 22px 22px 0 0; border-top: 1px solid var(--border-light);
+  display: flex; flex-direction: column; padding: 14px 16px calc(env(safe-area-inset-bottom, 0px) + 14px); color: var(--text);
+}
+.sv-viewers.hidden { display: none; }
+.sv-vh { display: flex; align-items: center; justify-content: space-between; font-weight: 700; margin-bottom: 10px; }
+.sv-vh .sv-icon.dark { background: var(--bg-tertiary); color: var(--text); }
+.sv-vlist { overflow-y: auto; display: flex; flex-direction: column; gap: 4px; }
+.sv-vrow { display: flex; align-items: center; gap: 12px; padding: 8px 4px; }
+.sv-avatar.small { width: 38px; height: 38px; background: var(--bg-tertiary); color: var(--accent-light); font-weight: 700; }
+.sv-vname { flex: 1; display: flex; flex-direction: column; font-size: 14px; font-weight: 700; min-width: 0; }
+.sv-vname small { font-size: 11px; font-weight: 400; color: var(--text-muted); }
+.sv-vrx { color: var(--accent-light); display: flex; }
+.sv-empty { text-align: center; color: var(--text-muted); padding: 20px 0; font-size: 14px; }

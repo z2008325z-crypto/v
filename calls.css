@@ -1,0 +1,25 @@
+/* ===== CALL OVERLAY ===== */
+.call-overlay {
+  position: fixed; inset: 0; z-index: 900; background: rgba(0,0,0,.92);
+  display: flex; align-items: center; justify-content: center; padding: 24px;
+}
+.call-overlay.hidden { display: none; }
+.call-box { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%; max-width: 340px; text-align: center; color: #fff; }
+.call-avatar {
+  width: 104px; height: 104px; border-radius: 50%; overflow: hidden; margin-bottom: 8px;
+  display: flex; align-items: center; justify-content: center; background: var(--surface);
+  font-size: 40px; font-weight: 700; color: var(--accent-light);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+}
+.call-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.call-box h3 { font-size: 22px; font-weight: 700; }
+.call-box p { font-size: 14px; opacity: .75; min-height: 20px; }
+.call-row { display: flex; gap: 28px; margin-top: 28px; }
+.call-row.hidden { display: none; }
+.call-btn {
+  width: 64px; height: 64px; border-radius: 50%; border: 0; cursor: pointer; color: #fff;
+  background: rgba(255,255,255,.14); display: flex; align-items: center; justify-content: center;
+}
+.call-btn.accept { background: #22c55e; }
+.call-btn.end { background: #ef4444; }
+.call-btn.on { background: #fff; color: #000; }
